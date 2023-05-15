@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_cad_cliente"
-        android:name="com.br.laurateodoro.meuhotel.cadCliente"
+        android:name="com.br.laurateodoro.meuhotel.ui.cadclientes.cadCliente"
         android:label="@string/title_cad_cliente"
         tools:layout="@layout/fragment_cad_cliente" />
 </navigation>
