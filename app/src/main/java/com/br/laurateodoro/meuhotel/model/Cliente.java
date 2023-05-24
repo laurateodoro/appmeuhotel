@@ -11,7 +11,7 @@ public class Cliente {
     private int pcd;
     private int fumante;
 
-    public Cliente (JSONObject jo) {
+    public Cliente (JSONObject jp) {
         try {
             this.setNomeHospede((String) jp.get("nome"));
             this.setCpf((String) jp.get("cpf"));
