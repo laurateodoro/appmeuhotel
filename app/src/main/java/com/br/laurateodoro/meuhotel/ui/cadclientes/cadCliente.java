@@ -29,7 +29,12 @@ public class cadCliente extends Fragment implements View.OnClickListener{
     private CheckBox cbpcd;
     private CheckBox cbfumante;
     private Button btSalvar;
+
+    //volley
+    private RequestQueue requestQueue;
+    private JsonObjectRequest jsonObjectReq;
     private View root;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,7 @@ public class cadCliente extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root = inflater.inflate(R.layout.fragment_cad_cliente, container, false);
+        this.root = inflater.inflate(R.layout.fragment_cad_cliente, container, false);
         this.etnome = (EditText) root.findViewById(R.id.etnm);
         this.etcpf = (EditText) root.findViewById(R.id.etcpf);
         this.ettelefone = (EditText) root.findViewById(R.id.ettelefone);
@@ -52,7 +57,15 @@ public class cadCliente extends Fragment implements View.OnClickListener{
         this.cbfumante = (CheckBox) root.findViewById(R.id.cbfumante);
         this.btSalvar = (Button) root.findViewById(R.id.btSalvar);
         this.btSalvar.setOnClickListener(this);
-        return root;
+
+        //instanciando a fila de requests - caso o objeto seja o root
+        Object Volley;
+        this.requestQueue = Volley.newRequestQueue(root.getContext());
+        //instanciando a fila de requests - caso o objeto seja o view
+        this.requestQueue = Volley.newRequestQueue(view.getContext());
+        //inicializando a fila de requests do SO
+        this.requestQueue.start();
+        return this.root;
     }
 
     @Override
@@ -75,7 +88,46 @@ public class cadCliente extends Fragment implements View.OnClickListener{
                 Toast toast = Toast.makeText
                         (context, text, duration);
                 toast.show();
+
+                //instanciando a fila de requests - caso o objeto seja o root
+                this.requestQueue = Volley.newRequestQueue(root.getContext());
+//instanciando a fila de requests - caso o objeto seja o view
+                this.requestQueue = Volley.newRequestQueue(view.getContext());
+//inicializando a fila de requests do SO
+                this.requestQueue.start();
                 break;
         }
     }
-}
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Snackbar mensagem = Snackbar.make(root,
+                "Ops! Houve um problema ao realizar o cadastro: " +
+                        error.toString(),Snackbar.LENGTH_LONG);
+        mensagem.show();
+    }
+    @Override
+    public void onResponse(Object response) {
+        String resposta = response.toString();
+        try {
+            if(resposta.equals("500")) {
+                Snackbar mensagem = Snackbar.make(root,
+                        "Erro! = " + resposta,
+                        Snackbar.LENGTH_LONG);
+                mensagem.show();
+            } else {
+                //sucesso
+                // limpar campos da tela
+                this.etnome.setText("");
+                this.etcpf.setText("");
+                this.ettelefone.setText("");
+                this.cbpcd.setText("");
+                this.cbfumante.setText("");
+                //mensagem de sucesso
+                Snackbar mensagem = Snackbar.make(root,
+                        "Sucesso! = " + resposta,
+                        Snackbar.LENGTH_LONG);
+                mensagem.show();
+            }
+        } catch (Exception e) { e.printStackTrace();}
+
+    }
