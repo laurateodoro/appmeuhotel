@@ -13,11 +13,11 @@ public class Cliente {
 
     public Cliente (JSONObject jp) {
         try {
-            this.setNomeHospede((String) jp.get("nome"));
-            this.setCpf((String) jp.get("cpf"));
-            this.setTelefone((String) jp.get("telefone"));
-            this.setPcd((int) jp.get("pcd"));
-            this.setFumanteHospede((int) jp.get("fumante"));
+            this.setNomeHospede((String) jp.get("nomecliente"));
+            this.setCpf((String) jp.get("cpfcliente"));
+            this.setTelefone((String) jp.get("telefonecliente"));
+            this.setPcd((int) jp.get("pcdcliente"));
+            this.setFumanteHospede((int) jp.get("fumantecliente"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -35,10 +35,11 @@ public class Cliente {
     public JSONObject toJsonObject() {
         JSONObject json = new JSONObject();
         try {
-            json.put("nome", this.nome);
-            json.put("telefone", this.telefone);
-            json.put("pcd", this.pcd);
-            json.put("fumante", this.fumante);
+            json.put("nomecliente", this.nome);
+            json.put("cpfcliente", this.cpf);
+            json.put("telefonecliente", this.telefone);
+            json.put("pcdcliente", this.pcd);
+            json.put("fumantecliente", this.fumante);
         } catch (JSONException e) {
             e.printStackTrace();
         }

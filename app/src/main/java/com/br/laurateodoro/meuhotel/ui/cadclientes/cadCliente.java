@@ -14,14 +14,23 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.br.laurateodoro.meuhotel.R;
 import com.br.laurateodoro.meuhotel.model.Cliente;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class cadCliente extends Fragment implements View.OnClickListener{
+public class cadCliente extends Fragment implements View.OnClickListener, Response.ErrorListener,
+        Response.Listener {
+
 
     private EditText etnome;
     private EditText etcpf;
@@ -39,7 +48,7 @@ public class cadCliente extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar()
+        ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setDisplayShowCustomEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setDisplayHomeAsUpEnabled(false);
@@ -59,10 +68,9 @@ public class cadCliente extends Fragment implements View.OnClickListener{
         this.btSalvar.setOnClickListener(this);
 
         //instanciando a fila de requests - caso o objeto seja o root
-        Object Volley;
+
         this.requestQueue = Volley.newRequestQueue(root.getContext());
-        //instanciando a fila de requests - caso o objeto seja o view
-        this.requestQueue = Volley.newRequestQueue(view.getContext());
+
         //inicializando a fila de requests do SO
         this.requestQueue.start();
         return this.root;
@@ -79,37 +87,49 @@ public class cadCliente extends Fragment implements View.OnClickListener{
                 c.setNomeHospede(this.etnome.getText().toString());
                 c.setCpf(this.etcpf.getText().toString());
                 c.setTelefone(this.ettelefone.getText().toString());
-                if (this.cbpcd.isChecked()) {c.setPcd(1); } else {c.setPcd(0);}
-                if (this.cbpcd.isChecked()) {c.setFumanteHospede(1); } else {c.setFumanteHospede(0);}
+                if (this.cbpcd.isChecked()) {
+                    c.setPcd(1);
+                } else {
+                    c.setPcd(0);
+                }
+                if (this.cbpcd.isChecked()) {
+                    c.setFumanteHospede(1);
+                } else {
+                    c.setFumanteHospede(0);
+                }
+                /*
 //mensagem de sucesso
-                Context context =  view.getContext();
+                Context context = view.getContext();
                 CharSequence text = "salvo com sucesso!";
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText
                         (context, text, duration);
                 toast.show();
-
-                //instanciando a fila de requests - caso o objeto seja o root
-                this.requestQueue = Volley.newRequestQueue(root.getContext());
-//instanciando a fila de requests - caso o objeto seja o view
-                this.requestQueue = Volley.newRequestQueue(view.getContext());
-//inicializando a fila de requests do SO
-                this.requestQueue.start();
+*/
+                jsonObjectReq = new JsonObjectRequest(
+                        Request.Method.POST,
+                        "http://10.0.2.2/cadcliente.php",
+                        c.toJsonObject(), this, this);
+                requestQueue.add(jsonObjectReq);
                 break;
         }
     }
+
+
     @Override
     public void onErrorResponse(VolleyError error) {
         Snackbar mensagem = Snackbar.make(root,
                 "Ops! Houve um problema ao realizar o cadastro: " +
-                        error.toString(),Snackbar.LENGTH_LONG);
+                        error.toString(), Snackbar.LENGTH_LONG);
         mensagem.show();
     }
+
+
     @Override
     public void onResponse(Object response) {
         String resposta = response.toString();
         try {
-            if(resposta.equals("500")) {
+            if (resposta.equals("500")) {
                 Snackbar mensagem = Snackbar.make(root,
                         "Erro! = " + resposta,
                         Snackbar.LENGTH_LONG);
@@ -128,6 +148,8 @@ public class cadCliente extends Fragment implements View.OnClickListener{
                         Snackbar.LENGTH_LONG);
                 mensagem.show();
             }
-        } catch (Exception e) { e.printStackTrace();}
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+}
