@@ -1,6 +1,5 @@
 package com.br.laurateodoro.meuhotel.ui.cadclientes;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,7 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class cadCliente extends Fragment implements View.OnClickListener, Response.ErrorListener,
+public class CadCliente extends Fragment implements View.OnClickListener, Response.ErrorListener,
         Response.Listener {
 
 
@@ -88,14 +86,14 @@ public class cadCliente extends Fragment implements View.OnClickListener, Respon
                 c.setCpf(this.etcpf.getText().toString());
                 c.setTelefone(this.ettelefone.getText().toString());
                 if (this.cbpcd.isChecked()) {
-                    c.setPcd(1);
+                    c.setPcd("s");
                 } else {
-                    c.setPcd(0);
+                    c.setPcd("n");
                 }
                 if (this.cbpcd.isChecked()) {
-                    c.setFumanteHospede(1);
+                    c.setFumanteHospede("s");
                 } else {
-                    c.setFumanteHospede(0);
+                    c.setFumanteHospede("n");
                 }
                 /*
 //mensagem de sucesso

@@ -8,16 +8,16 @@ public class Cliente {
     private String nome;
     private String cpf;
     private String telefone;
-    private int pcd;
-    private int fumante;
+    private String pcd;
+    private String fumante;
 
     public Cliente (JSONObject jp) {
         try {
             this.setNomeHospede((String) jp.get("nomecliente"));
             this.setCpf((String) jp.get("cpfcliente"));
             this.setTelefone((String) jp.get("telefonecliente"));
-            this.setPcd((int) jp.get("pcdcliente"));
-            this.setFumanteHospede((int) jp.get("fumantecliente"));
+            this.setPcd((String) jp.get("pcdcliente"));
+            this.setFumanteHospede((String) jp.get("fumantecliente"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -28,8 +28,8 @@ public class Cliente {
         this.nome = "";
         this.cpf = "000.000.000-00";
         this.telefone = "+00";
-        this.fumante = 0;
-        this.pcd = 0;
+        this.fumante = "n";
+        this.pcd = "n";
     }
 
     public JSONObject toJsonObject() {
@@ -47,22 +47,22 @@ public class Cliente {
     }
 
 
-    public int getPcd ()
+    public String getPcd ()
     {
         return this.pcd;
     }
 
-    public boolean setPcd (int pcd)
+    public boolean setPcd (String pcd)
     {
         boolean valido = false;
-        if (pcd == 0 || pcd == 1)
+        if (pcd == "s" || pcd == "n")
         {
             this.pcd = pcd;
             valido = true;
         }
         else
         {
-            this.pcd = 0;
+            this.pcd = "n";
         }
 
         return valido;
@@ -104,7 +104,7 @@ public class Cliente {
         }
         else
         {
-            this.cpf = "Anônimo";
+            this.cpf = "xxx.xxx.xxx-xx";
         }
         return valido;
     }
@@ -129,28 +129,28 @@ public class Cliente {
         }
         else
         {
-            this.telefone = "Anônimo";
+            this.telefone = "(00)00000-0000";
         }
         return valido;
     }
 
 
-    public int getFumanteHospede ()
+    public String getFumanteHospede ()
     {
         return this.fumante;
     }
 
-    public boolean setFumanteHospede (int fumante)
+    public boolean setFumanteHospede (String fumante)
     {
         boolean valido = false;
-        if (fumante == 0 || fumante == 1)
+        if (fumante == "n" || fumante == "s")
         {
             this.fumante = fumante;
             valido = true;
         }
         else
         {
-            this.fumante = -1;
+            this.fumante = "n";
         }
 
         return valido;
